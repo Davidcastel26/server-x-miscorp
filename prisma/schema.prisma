@@ -1,0 +1,48 @@
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+model User_miscord_X {
+  idUser             String @unique @id @default(uuid())
+  username           String @unique
+  email              String? @unique
+  password           String
+  img                String?
+  roleId             String
+  role               Role_miscord_X @relation("RoleToUser", fields: [roleId], references: [role_Name])
+  google             Boolean @default(false)
+  suspencionIsActive Boolean @default(true)
+  dar_Baja           Boolean @default(false)
+  created_At         DateTime @default(now())
+  updated_At         DateTime @updatedAt
+  todo               ToDo_miscord_X[] @relation("UserToToDo")
+
+  @@index([ roleId ])
+}
+
+model Role_miscord_X{
+  idRole          String @unique @id @default(uuid())
+  role_Name       String @unique
+  create_At       DateTime @default(now())
+  user            User_miscord_X[] @relation("RoleToUser")
+
+}
+
+model ToDo_miscord_X {
+  idTodo        String @unique @id @default(uuid())
+  userId        String
+  todoName      String
+  Is_Completed  Boolean @default(true)
+  create_At     DateTime @default(now())
+  update_At     DateTime @updatedAt
+  user          User_miscord_X @relation("UserToToDo", fields: [userId], references: [idUser])
+
+  @@index([userId])
+}
