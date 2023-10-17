@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import prismadb from '../../models/prismadb';
-import { Roles } from '../../ts/interfaces/users';
+import { Roles } from '../../ts/interfaces/iroles';
 
 export const createRole = async (
     req:  Request,

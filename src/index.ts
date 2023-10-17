@@ -1,3 +1,3 @@
-import { app } from './models/server'
+import { server } from './models/server'
 
-app.listen();
+server.listen();

@@ -2,6 +2,7 @@ import session from 'express-session';
 import RedisStore from "connect-redis";
 import { createClient } from 'redis';
 import dotenv from 'dotenv';
+import { Socket } from 'socket.io';
 
 dotenv.config()
 
@@ -31,3 +32,6 @@ export const sessionMiddleware = session({
     sameSite: process.env.ENVIRONMENT === "production" ? "none" :"lax",
  }
 })
+
+export const wrap = ( expressMiddleware:any) => (socket:Socket, next:Function) => 
+    expressMiddleware(socket.request, {}, next)
