@@ -4,11 +4,13 @@ import bcryptjs from 'bcryptjs';
 import {  Users } from '../../ts/interfaces/iusers';
 // CustomRequest
 import prismadb from '../../models/prismadb';
+import { roleId } from '../../helpers/rolesValidation';
 
 const salt = bcryptjs.genSaltSync();
 
 export const registerUser = async (
     req: typeof request,
+    // req: CustomRequest,
     res: Response,
     next: NextFunction
 ) => {
@@ -40,6 +42,10 @@ export const registerUser = async (
             userId:   userPosted.idUser,
         }
 
+        console.log({
+            loggedIn: true,
+            newUser
+        })
         res.status(201).json({
             loggedIn: true,
             newUser
@@ -62,7 +68,7 @@ export const loginUser = async (
 ) => {
 
     const { username, password } = req.body;
-
+    console.log(req.session)
     try {
         
         const potentialLogin = await prismadb.user_miscord_X.findFirst({
@@ -89,7 +95,13 @@ export const loginUser = async (
         req.session.user = {
             username: potentialLogin.username,
             userId:   potentialLogin.idUser,
+            roleId: potentialLogin.roleId
         }
+
+        console.log({
+            loggedIn: true,
+            user: potentialLogin.username
+        })
 
         return res.status(200).json({
             loggedIn: true,
