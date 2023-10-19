@@ -5,7 +5,7 @@ import helmet from "helmet";
 import dotenv from "dotenv";
 import { corsConfig } from "../configs/corsConfig";
 import { Paths } from "../ts/enum/paths";
-import { authRoute, roleRoute } from "../routes";
+import { authRoute, roleRoute, todoRoute, userRoute } from "../routes";
 import { sessionMiddleware, wrap } from "../middleware/serverSession";
 
 dotenv.config();
@@ -20,9 +20,11 @@ app.use( cors(corsConfig) );
 app.use( express.json() );
 app.use( sessionMiddleware );
 
-app.use( Paths.users, ()  => {} )
+// app.use( Paths.users, ()  => {} )
 app.use( Paths.roles, roleRoute )
 app.use( Paths.auth,  authRoute)
+app.use( Paths.todos,  todoRoute)
+app.use( Paths.users,  userRoute)
 
 io.use(wrap(sessionMiddleware))
 
